@@ -1,0 +1,53 @@
+name: dockercompose6789573521876305917
+services:
+  myservice:
+    container_name: frontend
+    depends_on:
+      test:
+        condition: service_started
+    image: erosi321/reacttest:1.0.0
+    networks:
+      chatapplication: null
+    ports:
+    - mode: ingress
+      target: 3000
+      published: "3000"
+      protocol: tcp
+  test:
+    build:
+      context: C:\Users\Admin\Desktop\test\Test
+      dockerfile: Test/Dockerfile
+    container_name: chat-app
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: test
+    networks:
+      chatapplication: null
+    ports:
+    - mode: ingress
+      target: 80
+      protocol: tcp
+    - mode: ingress
+      target: 80
+      published: "44368"
+      protocol: tcp
+    - mode: ingress
+      target: 443
+      protocol: tcp
+    volumes:
+    - type: bind
+      source: C:\Users\Admin\AppData\Roaming/Microsoft/UserSecrets
+      target: /root/.microsoft/usersecrets
+      read_only: true
+      bind:
+        create_host_path: true
+    - type: bind
+      source: C:\Users\Admin\AppData\Roaming/ASP.NET/Https
+      target: /root/.aspnet/https
+      read_only: true
+      bind:
+        create_host_path: true
+networks:
+  chatapplication:
+    name: dockercompose6789573521876305917_chatapplication

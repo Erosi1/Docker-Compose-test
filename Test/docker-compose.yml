@@ -1,0 +1,26 @@
+version: '3.4'
+
+networks:
+  chatapplication:
+
+services:
+  test:
+    container_name: chat-app
+    image: ${DOCKER_REGISTRY-}test
+    build:
+      context: .
+      dockerfile: Test/Dockerfile
+    ports:
+      - 44368:80 # map port 44368 on the host to port 80 in the container
+    networks:
+      - chatapplication
+
+  myservice:
+    container_name: frontend
+    image: erosi321/reacttest:1.0.0
+    ports:
+      - 3000:3000
+    depends_on:
+      - test
+    networks:
+      - chatapplication
